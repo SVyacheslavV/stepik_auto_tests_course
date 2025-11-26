@@ -2,6 +2,9 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 import time
 
+# данные пользователя которые будем вводить
+data = {'first name': 'Ivan', 'last name': 'Petrov', 'email': 'my_mail@yandex.ru'}
+
 try:
     # link = "http://suninjuly.github.io/registration1.html"
     link = 'https://suninjuly.github.io/registration2.html'
@@ -9,9 +12,34 @@ try:
     browser.get(link)
 
     # Ваш код, который заполняет обязательные поля
-    browser.find_element(By.TAG_NAME, 'input').send_keys("Ivan")
-    browser.find_element(By.CLASS_NAME, "form-control.second").send_keys("Petrov")
-    browser.find_element(By.CLASS_NAME, "form-control.third").send_keys("my_mail@yandex.ru")
+    # labels_tag = browser.find_elements(By.TAG_NAME, 'label')
+    # input_tag = browser.find_elements(By.TAG_NAME, 'input')
+    # for ind, label in enumerate(labels_tag):
+    #     value = label.text
+    #     if value[-1] == '*':
+    #         v = value[:-1]
+    #         input_tag[ind].send_keys(data[v])
+
+
+    first_name = browser.find_element(By.CSS_SELECTOR, '[placeholder="Input your first name"]')
+    text = first_name.get_attribute('placeholder')
+    key = [text.split()[-1], ' '.join(text.split()[-2:])][text.split()[-1] == 'name']
+    print(f'{key}: {data[key]}')
+    first_name.send_keys(data[key])
+    time.sleep(1)
+    last_name = browser.find_element(By.CSS_SELECTOR, '[placeholder="Input your last name"]')
+    text = last_name.get_attribute('placeholder')
+    key = [text.split()[-1], ' '.join(text.split()[-2:])][text.split()[-1] == 'name']
+    print(f'{key}: {data[key]}')
+    last_name.send_keys(data[key])
+    time.sleep(1)
+    email = browser.find_element(By.CSS_SELECTOR, '[placeholder="Input your email"]')
+    text = email.get_attribute('placeholder')
+    key = [text.split()[-1], ' '.join(text.split()[-2:])][text.split()[-1] == 'name']
+    print(f'{key}: {data[key]}')
+    email.send_keys(data[key])
+    time.sleep(1)
+
 
     # browser.find_element(By.ID, "country").send_keys("Russia")
 
@@ -33,6 +61,6 @@ try:
     print(welcome_text_elt.text)
 finally:
     # ожидание чтобы визуально оценить результаты прохождения скрипта
-    time.sleep(3)
+    time.sleep(2)
     # закрываем браузер после всех манипуляций
     browser.quit()
